@@ -7,11 +7,10 @@ from datetime import datetime
 from youtube_transcript_api import YouTubeTranscriptApi
 from zhipuai import ZhipuAI
 
-# ========== Enter your API Keys here ==========
-YOUTUBE_API_KEY = "AIzaSyBOPTxKK67uxVmp8MVbS_Eq8xlczsnChdI"
-zhipu_client = ZhipuAI(api_key="fcffc724b2d944179db3d3ed0f996098.T6yAzGtXEcQq0E23")      
+import os
+YOUTUBE_API_KEY = os.environ.get('YOUTUBE_API_KEY', '')
+ZHIPU_API_KEY = os.environ.get('ZHIPU_API_KEY', '')
 
-# ========== Configure channels to track ==========
 CHANNELS = {
     "Andrej Karpathy": "UCXUPKJO5MZQN11PqgIvyuvQ",
     "Matthew Berman": "UCawZsQWqfGSbCI5yjkdVkTA",
@@ -88,7 +87,6 @@ def get_transcript(video_id):
 def analyze_with_zhipu(transcript, channel_name, video_title, other_channels):
     """Analyze transcript using ZhipuAI"""
     
-    # 只取前3000字符，避免超过token限制
     transcript_short = transcript[:3000]
     
     prompt = f"""Analyze this YouTube video. Return ONLY valid JSON, no explanation.
