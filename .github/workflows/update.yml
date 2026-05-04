@@ -1,8 +1,6 @@
 name: Update YouTube Monitor
 
 on:
-  schedule:
-    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 jobs:
@@ -20,18 +18,13 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install requests youtube-transcript-api zhipuai
+          pip install requests
+          pip install youtube-transcript-api
+          pip install sniffio
+          pip install zhipuai
       
       - name: Run script
         run: python youtube.py
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
-      
-      - name: Commit and push changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update: $(date -u '+%Y-%m-%d %H:%M:%S')"
-          git push
